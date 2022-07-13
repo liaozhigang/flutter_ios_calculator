@@ -13,6 +13,8 @@ const MAX_FRACTION_DIGITS = 6;
 final NumberFormat formatter = new NumberFormat("#,###.######")
   ..maximumFractionDigits = 6;
 const PADDING = 13.5; //The spacing/padding around buttons
+const OPERATOR_FONT_FAMILY =
+    "courier new"; // Using monospace font for operator.
 
 var calculatorOperations = {
   '/': (prevValue, nextValue) => prevValue / nextValue,
@@ -120,10 +122,151 @@ class CalculatorState extends State<Calculator> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    var clearDisplay = displayValue != '0';
-    var clearText = clearDisplay ? 'C' : 'AC';
+  Widget get toggleKey => FunctionKey(text: "±", onPress: toggleSign);
+  Widget get clearKey => FunctionKey(
+        text: displayValue != '0' ? 'C' : 'AC',
+        onPress: () =>
+            displayValue != '0' ? this.clearDisplay() : this.clearAll(),
+      );
+  Widget get percentageKey => FunctionKey(text: "%", onPress: inputPercent);
+  Widget get dotKey => DigitKey(text: ".", onPress: inputDot);
+
+  Widget get divideOp =>
+      OperatorKey(text: "÷", onPress: () => this.performOperation('/'));
+  Widget get multiplyOp =>
+      OperatorKey(text: "×", onPress: () => this.performOperation('*'));
+  Widget get subtractOp =>
+      OperatorKey(text: "-", onPress: () => this.performOperation('-'));
+  Widget get addOp =>
+      OperatorKey(text: "+", onPress: () => this.performOperation('+'));
+  Widget get equalOp =>
+      OperatorKey(text: "=", onPress: () => this.performOperation('='));
+
+  Widget get dummyKey => digit(1);
+
+  Widget digit(int num) {
+    return DigitKey(text: num.toString(), onPress: () => this.inputDigit(num));
+  }
+
+  Widget row1(bool compact) {
+    return Flexible(
+      child: Row(
+          children: compact
+              ? [
+                  clearKey,
+                  toggleKey,
+                  percentageKey,
+                  divideOp,
+                ]
+              : [
+                  dummyKey,
+                  dummyKey,
+                  dummyKey,
+                  dummyKey,
+                  dummyKey,
+                  clearKey,
+                  toggleKey,
+                  percentageKey,
+                  divideOp,
+                ]),
+    );
+  }
+
+  Widget row2(bool compact) {
+    return Flexible(
+      child: Row(
+          children: compact
+              ? [
+                  digit(7),
+                  digit(8),
+                  digit(9),
+                  multiplyOp,
+                ]
+              : [
+                  dummyKey,
+                  dummyKey,
+                  dummyKey,
+                  dummyKey,
+                  dummyKey,
+                  digit(7),
+                  digit(8),
+                  digit(9),
+                  multiplyOp,
+                ]),
+    );
+  }
+
+  Widget row3(bool compact) {
+    return Flexible(
+      child: Row(
+          children: compact
+              ? [
+                  digit(4),
+                  digit(5),
+                  digit(6),
+                  subtractOp,
+                ]
+              : [
+                  dummyKey,
+                  dummyKey,
+                  dummyKey,
+                  dummyKey,
+                  dummyKey,
+                  digit(4),
+                  digit(5),
+                  digit(6),
+                  subtractOp,
+                ]),
+    );
+  }
+
+  Widget row4(bool compact) {
+    return Flexible(
+      child: Row(
+          children: compact
+              ? [
+                  digit(1),
+                  digit(2),
+                  digit(3),
+                  addOp,
+                ]
+              : [
+                  dummyKey,
+                  dummyKey,
+                  dummyKey,
+                  dummyKey,
+                  dummyKey,
+                  digit(1),
+                  digit(2),
+                  digit(3),
+                  addOp,
+                ]),
+    );
+  }
+
+  Widget row5(bool compact) {
+    return Flexible(
+      child: Row(
+          children: compact
+              ? [
+                  digit(0),
+                  dotKey,
+                  equalOp,
+                ]
+              : [
+                  dummyKey,
+                  dummyKey,
+                  dummyKey,
+                  dummyKey,
+                  dummyKey,
+                  digit(0),
+                  dotKey,
+                  equalOp,
+                ]),
+    );
+  }
+
+  Widget content(bool isCompact) {
     final padding = MediaQuery.of(context).padding;
     final size = MediaQuery.of(context).size;
 
@@ -137,149 +280,36 @@ class CalculatorState extends State<Calculator> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       resizeToAvoidBottomInset: false,
-      body: Stack(fit: StackFit.expand, children: [
-        Container(
-          padding: EdgeInsets.only(left: PADDING),
-          color: Colors.black,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              CalculatorDisplay(value: displayValue),
-              Flexible(
-                child: Row(
-                  children: <Widget>[
-                    FunctionKey(
-                      text: clearText,
-                      onPress: () =>
-                          clearDisplay ? this.clearDisplay() : this.clearAll(),
-                    ),
-                    FunctionKey(
-                      text: "±",
-                      onPress: toggleSign,
-                    ),
-                    FunctionKey(
-                      text: "%",
-                      onPress: inputPercent,
-                    ),
-                    OperatorKey(
-                      text: "÷",
-                      onPress: () => this.performOperation('/'),
-                    )
-                  ],
-                ),
-              ),
-              Flexible(
-                child: Row(
-                  children: <Widget>[
-                    DigitKey(
-                      text: "7",
-                      onPress: () => this.inputDigit(7),
-                    ),
-                    DigitKey(
-                      text: "8",
-                      onPress: () => this.inputDigit(8),
-                    ),
-                    DigitKey(
-                      text: "9",
-                      onPress: () => this.inputDigit(9),
-                    ),
-                    OperatorKey(
-                      text: "×",
-                      onPress: () => this.performOperation('*'),
-                    )
-                  ],
-                ),
-              ),
-              Flexible(
-                child: Row(
-                  children: <Widget>[
-                    DigitKey(
-                      text: "4",
-                      onPress: () => this.inputDigit(4),
-                    ),
-                    DigitKey(
-                      text: "5",
-                      onPress: () => this.inputDigit(5),
-                    ),
-                    DigitKey(
-                      text: "6",
-                      onPress: () => this.inputDigit(6),
-                    ),
-                    OperatorKey(
-                      text: "-",
-                      onPress: () => this.performOperation('-'),
-                    )
-                  ],
-                ),
-              ),
-              Flexible(
-                child: Row(
-                  children: <Widget>[
-                    DigitKey(
-                      text: "1",
-                      onPress: () => this.inputDigit(1),
-                    ),
-                    DigitKey(
-                      text: "2",
-                      onPress: () => this.inputDigit(2),
-                    ),
-                    DigitKey(
-                      text: "3",
-                      onPress: () => this.inputDigit(3),
-                    ),
-                    OperatorKey(
-                      text: "+",
-                      onPress: () => this.performOperation('+'),
-                    )
-                  ],
-                ),
-              ),
-              Flexible(
-                child: Row(
-                  children: <Widget>[
-                    DigitKey(
-                      text: "0",
-                      onPress: () => this.inputDigit(0),
-                    ),
-                    DigitKey(
-                      text: ".",
-                      onPress: inputDot,
-                      fontSize: fontSize32 * 2,
-                    ),
-                    OperatorKey(
-                      text: "=",
-                      onPress: () => this.performOperation('='),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
+      body: Container(
+        padding: EdgeInsets.only(left: PADDING),
+        color: Colors.black,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            CalculatorDisplay(value: displayValue),
+            row1(isCompact),
+            row2(isCompact),
+            row3(isCompact),
+            row4(isCompact),
+            row5(isCompact),
+          ],
         ),
-        Positioned(
-            left: 5,
-            top: MediaQuery.of(context).padding.top,
-            child: SizedBox(
-              width: 40,
-              height: 40,
-              child: ClipOval(
-                child: new CustomButton(
-                    highlightColor: Colors.white54,
-                    padding: EdgeInsets.all(0.0),
-                    child: Center(
-                        child: new Icon(
-                      Device.get().isIos
-                          ? Icons.arrow_back_ios
-                          : Icons.arrow_back,
-                      color: Colors.white,
-                    )),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    }),
-              ),
-            ))
-      ]),
+      ),
     );
+  }
+
+  Widget get compact => content(true);
+  Widget get full => content(false);
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      if (constraints.maxWidth >= 600) {
+        return full;
+      } else {
+        return compact;
+      }
+    });
   }
 }
 
@@ -390,7 +420,11 @@ class OperatorKey extends StatelessWidget {
       text: text,
       onPress: onPress,
       backgroundColor: Colors.orangeAccent,
-      style: TextStyle(color: Colors.white, fontSize: fontSize36),
+      style: TextStyle(
+          color: Colors.white,
+          fontSize: fontSize36,
+          fontFamily: OPERATOR_FONT_FAMILY,
+          fontWeight: FontWeight.bold),
     );
   }
 }

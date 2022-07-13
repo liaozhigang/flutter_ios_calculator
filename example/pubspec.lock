@@ -9,7 +9,7 @@ packages:
     source: hosted
     version: "2.8.2"
   auto_size_text:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: auto_size_text
       url: "https://pub.dartlang.org"
@@ -50,6 +50,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.16.0"
+  cupertino_icons:
+    dependency: "direct main"
+    description:
+      name: cupertino_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -63,24 +70,45 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_device_type:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_device_type
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.0"
+  flutter_ios_calculator:
+    dependency: "direct main"
+    description:
+      path: ".."
+      relative: true
+    source: path
+    version: "0.1.0"
+  flutter_lints:
+    dependency: "direct dev"
+    description:
+      name: flutter_lints
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
   intl:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: intl
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.0"
+  lints:
+    dependency: transitive
+    description:
+      name: lints
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   matcher:
     dependency: transitive
     description:
@@ -164,4 +192,4 @@ packages:
     source: hosted
     version: "2.1.2"
 sdks:
-  dart: ">=2.17.0-0 <3.0.0"
+  dart: ">=2.17.5 <3.0.0"
