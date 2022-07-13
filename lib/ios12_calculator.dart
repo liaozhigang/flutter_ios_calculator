@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_device_type/flutter_device_type.dart';
+// import 'package:flutter_device_type/flutter_device_type.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
 import 'dart:math' as Math;
@@ -7,8 +7,8 @@ import 'dart:math' as Math;
 import 'custom_button.dart';
 
 double? width, height, displayHeight;
-final fontSize32 = Device.get().isTablet ? 32 * 2.0 : 32.0;
-final fontSize36 = Device.get().isTablet ? 36 * 2.0 : 36.0;
+final fontSize32 = 32.0;
+final fontSize36 = 36.0;
 const MAX_FRACTION_DIGITS = 6;
 final NumberFormat formatter = new NumberFormat("#,###.######")
   ..maximumFractionDigits = 6;
@@ -321,7 +321,7 @@ class CalculatorDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: displayHeight,
+      height: displayHeight! + 150,
       color: Colors.transparent,
       child: Padding(
         padding: EdgeInsets.only(right: PADDING * 1.5, top: 15.0),
@@ -330,7 +330,7 @@ class CalculatorDisplay extends StatelessWidget {
           child: AutoSizeText(
             value,
             style: TextStyle(
-              fontSize: Device.get().isTablet ? 130 : 96,
+              fontSize: 130,
               color: Colors.white,
             ),
             maxLines: 3,
@@ -360,7 +360,7 @@ class CalculatorKey extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.only(right: PADDING, bottom: PADDING),
         child: ClipRRect(
-          borderRadius: new BorderRadius.circular(width! / 4),
+          borderRadius: new BorderRadius.circular(width! / 1.0),
           child: CustomButton(
             padding: EdgeInsets.all(0),
             color: backgroundColor,
